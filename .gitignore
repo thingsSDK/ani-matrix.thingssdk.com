@@ -41,4 +41,6 @@ typings
 .vscode
 
 # tmp directory
-tmp.next/
+tmp
+
+.next/
