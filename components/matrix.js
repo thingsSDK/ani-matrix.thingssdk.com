@@ -11,23 +11,23 @@ import Styles from './utils/styles';
  * @param {number} rows
  * @param {number} pixels
  */
-function createRows(rows, pixels, bitmap, pixelClick) {
+function createRows(rows, pixels, bitmap, mouseHandler) {
   const rowsOfPixelComponents = [];
   for (let i = 0; i < rows; i ++) {
-    rowsOfPixelComponents.push(<Row key={i} width={pixels} rowNumber={i} rowValue={bitmap[i]} pixelClick={pixelClick} />);
+    rowsOfPixelComponents.push(<Row key={i} width={pixels} rowNumber={i} rowValue={bitmap[i]} mouseHandler={mouseHandler} />);
   }
   return <div>{rowsOfPixelComponents}</div>;
 }
 
 export default function Matrix(props) {
-  return <div className={style}>{createRows(props.height, props.width, props.bitmap, props.pixelClick)}</div>;
+  return <div className={style}>{createRows(props.height, props.width, props.bitmap, props.mouseHandler)}</div>;
 }
 
 Matrix.propTypes = {
   width: React.PropTypes.number.isRequired,
   height: React.PropTypes.number.isRequired,
   bitmap: React.PropTypes.array,
-  pixelClick: React.PropTypes.func
+  mouseHandler: React.PropTypes.func
 };
 
 Matrix.defaultProps = {

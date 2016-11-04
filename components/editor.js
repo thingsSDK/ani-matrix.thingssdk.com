@@ -30,7 +30,9 @@ export default class extends React.Component {
         this.state = {
             animation,
             currentIndex: 0,
-            language: "js"
+            language: "js",
+            mousedown: false,
+            initialPixelState: true
         };
 
     }
@@ -82,7 +84,7 @@ export default class extends React.Component {
         });
     }
     render() {
-        return <div>
+        return <div onMouseUp={this.mouseEvent.bind(this)}>
             <nav>
                 <div>
                     <button onClick={this.previousFrame.bind(this)}>Prev</button>
@@ -90,7 +92,7 @@ export default class extends React.Component {
                     <button onClick={this.nextFrame.bind(this)}>Next</button>
                 </div>
             </nav>
-            <Matrix bitmap={this.state.animation[this.state.currentIndex]} pixelClick={this.flip.bind(this)} />
+            <Matrix bitmap={this.state.animation[this.state.currentIndex]} mouseHandler={this.mouseEvent.bind(this)} />
             <div>
                 <button onClick={this.newFrame.bind(this)}>New Frame</button>
                 <button onClick={this.deleteFrame.bind(this)}>Delete Frame</button>
@@ -117,21 +119,49 @@ export default class extends React.Component {
         return codeOutput;
     }
     flip(x, y) {
-        const bitmap = this.state.animation[this.state.currentIndex];
+        const bitmap = this.currentBitmap;
         const rowValue = bitmap[y];
         const isPixelLit = isOn(x, rowValue);
-        let newRowValue;
-        if (isPixelLit) {
-            newRowValue = rowValue & ~(1 << x);
-        } else {
-            newRowValue = rowValue | 1 << x;
-        }
-        bitmap[y] = newRowValue;
-        this.setState({ animation });
+        this.draw(x,y, !isPixelLit);
     }
     changeLanguage(e) {
         const language = e.target.value;
         this.setState({ language });
+    }
+    mouseEvent(event, x, y) {
+        event.stopPropagation();
+        if(event.type === "mousedown") {
+            const bitmap = this.currentBitmap;
+            const rowValue = bitmap[y];
+            const isPixelLit = isOn(x, rowValue);
+            this.flip(x, y);
+            this.setState({
+                mousedown: true,
+                initialPixelState: isPixelLit
+            })
+        } else if(event.type === "mouseup") {
+            this.setState({
+                mousedown: false
+            })
+        } else if(this.state.mousedown && event.type === "mousemove") {
+            this.draw(x, y, !this.state.initialPixelState);
+        }
+    }
+    draw(x, y, on) {
+        const bitmap = this.currentBitmap;
+        const rowValue = bitmap[y];
+        let newRowValue;
+        if (on) {
+            newRowValue = rowValue | 1 << x;
+        } else {
+            newRowValue = rowValue & ~(1 << x);
+        }
+        bitmap[y] = newRowValue;
+        this.setState({ animation });
+    }
+
+    get currentBitmap() {
+        return this.state.animation[this.state.currentIndex];
     }
 }
 

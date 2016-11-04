@@ -1,17 +1,26 @@
 import React from 'react';
-import css from 'next/css';
+import css, {merge} from 'next/css';
 
 import Styles from './utils/styles';
 
 
 export default function Pixel(props) {
-  return <div className={props.on ? selectedStyle : style} onClick={() => props.pixelClick(props.x, props.y)}>{props.children}</div>;
+  const mouseEvent = event => props.mouseHandler(event, props.x, props.y);
+  const pixelStyle = props.on ? selectedStyle : style;
+  const cursorStyle = props.mouseHandler ? editableStyle : regularStyle;
+  return <div 
+            {...merge(pixelStyle, cursorStyle)}
+            onMouseDown={mouseEvent} 
+            onMouseUp={mouseEvent} 
+            onMouseMove={mouseEvent}
+            draggable={false}>{props.children}</div>;
 };
 
 Pixel.propTypes = {
   x: React.PropTypes.number.isRequired,
   y: React.PropTypes.number.isRequired,
-  on: React.PropTypes.bool.isRequired
+  on: React.PropTypes.bool.isRequired,
+  mouseHandler: React.PropTypes.func
 };
 
 const genericStyles = {
@@ -27,3 +36,13 @@ const style = css(
 const selectedStyle = css(
   Object.assign({backgroundColor: "red"}, genericStyles)
 );
+
+const editableStyle = css({
+  cursor: "pointer"
+});
+
+const regularStyle = css({
+  cursor: "wait"
+});
+
+
