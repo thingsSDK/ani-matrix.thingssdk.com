@@ -12,6 +12,9 @@
     "matrix",
     "microcontrollers"
   ],
+  "engines": {
+    "node": "^6.9.1"
+  },
   "author": "Andrew Chalkley <andrew@chalkley.org>",
   "license": "MIT",
   "dependencies": {
