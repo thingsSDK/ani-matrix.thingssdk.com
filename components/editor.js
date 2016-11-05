@@ -34,11 +34,12 @@ export default class extends React.Component {
             mousedown: false,
             initialPixelState: true,
             currentPreviewFrame: animation[0],
-            currentPreviewFrameIndex: 0,
-            intervalTime: 1000
+            currentPreviewFrameIndex: 0
         };
     }
-
+    componentDidMount() {
+        this.previewAnimation = this.startAnimationAtInterval(200);
+    }
     componentWillUnmount() {
         clearInterval(this.previewAnimation);
     }
@@ -50,7 +51,6 @@ export default class extends React.Component {
             });
 
             let newIndex = index + 1;
-
             if (newIndex === this.state.animation.length) {
                 newIndex = 0;
             }
@@ -58,14 +58,8 @@ export default class extends React.Component {
             this.setState({
                 currentPreviewFrameIndex: newIndex
             });
+
         }, interval);
-    }
-    updateInterval(event) {
-        const newInterval = event.target.value;
-        this.startAnimationAtInterval(newInterval);
-        this.setState({
-            intervalTime: newInterval
-        });
     }
     newFrame() {
         const animation = this.state.animation;
@@ -134,8 +128,6 @@ export default class extends React.Component {
             <section className={sectionStyle}>
                 <h2>Preview</h2>
                 <Matrix bitmap={this.state.currentPreviewFrame} />
-                <label htmlFor="interval">Interval</label>
-                <input id="interval" type="number" value={this.state.intervalTime} onChange={this.updateInterval} />
             </section>
             <h2 className={clearStyle}>Code</h2>
             <Radio value="js" checkedValue={this.state.language} name="language" onChange={this.changeLanguage.bind(this)} />
