@@ -32,9 +32,40 @@ export default class extends React.Component {
             currentIndex: 0,
             language: "js",
             mousedown: false,
-            initialPixelState: true
+            initialPixelState: true,
+            currentPreviewFrame: animation[0],
+            currentPreviewFrameIndex: 0,
+            intervalTime: 1000
         };
+    }
 
+    componentWillUnmount() {
+        clearInterval(this.previewAnimation);
+    }
+    startAnimationAtInterval(interval) {
+        return setInterval(() => {
+            const index = this.state.currentPreviewFrameIndex;
+            this.setState({
+                currentPreviewFrame: this.state.animation[index]
+            });
+
+            let newIndex = index + 1;
+
+            if (newIndex === this.state.animation.length) {
+                newIndex = 0;
+            }
+
+            this.setState({
+                currentPreviewFrameIndex: newIndex
+            });
+        }, interval);
+    }
+    updateInterval(event) {
+        const newInterval = event.target.value;
+        this.startAnimationAtInterval(newInterval);
+        this.setState({
+            intervalTime: newInterval
+        });
     }
     newFrame() {
         const animation = this.state.animation;
@@ -85,19 +116,28 @@ export default class extends React.Component {
     }
     render() {
         return <div onMouseUp={this.mouseEvent.bind(this)}>
-            <nav>
+            <section className={sectionStyle}>
+                <h2>Editor</h2>
+                <nav>
+                    <div>
+                        <button onClick={this.previousFrame.bind(this)}>Prev</button>
+                        <span>{this.state.currentIndex + 1}/{this.state.animation.length}</span>
+                        <button onClick={this.nextFrame.bind(this)}>Next</button>
+                    </div>
+                </nav>
+                <Matrix bitmap={this.state.animation[this.state.currentIndex]} mouseHandler={this.mouseEvent.bind(this)} />
                 <div>
-                    <button onClick={this.previousFrame.bind(this)}>Prev</button>
-                    <span>{this.state.currentIndex + 1}/{this.state.animation.length}</span>
-                    <button onClick={this.nextFrame.bind(this)}>Next</button>
+                    <button onClick={this.newFrame.bind(this)}>New Frame</button>
+                    <button onClick={this.deleteFrame.bind(this)}>Delete Frame</button>
                 </div>
-            </nav>
-            <Matrix bitmap={this.state.animation[this.state.currentIndex]} mouseHandler={this.mouseEvent.bind(this)} />
-            <div>
-                <button onClick={this.newFrame.bind(this)}>New Frame</button>
-                <button onClick={this.deleteFrame.bind(this)}>Delete Frame</button>
-            </div>
-
+            </section>
+            <section className={sectionStyle}>
+                <h2>Preview</h2>
+                <Matrix bitmap={this.state.currentPreviewFrame} />
+                <label htmlFor="interval">Interval</label>
+                <input id="interval" type="number" value={this.state.intervalTime} onChange={this.updateInterval} />
+            </section>
+            <h2 className={clearStyle}>Code</h2>
             <Radio value="js" checkedValue={this.state.language} name="language" onChange={this.changeLanguage.bind(this)} />
             <Radio value="cpp" checkedValue={this.state.language} name="language" onChange={this.changeLanguage.bind(this)} />
 
@@ -122,7 +162,7 @@ export default class extends React.Component {
         const bitmap = this.currentBitmap;
         const rowValue = bitmap[y];
         const isPixelLit = isOn(x, rowValue);
-        this.draw(x,y, !isPixelLit);
+        this.draw(x, y, !isPixelLit);
     }
     changeLanguage(e) {
         const language = e.target.value;
@@ -130,7 +170,7 @@ export default class extends React.Component {
     }
     mouseEvent(event, x, y) {
         event.stopPropagation();
-        if(event.type === "mousedown") {
+        if (event.type === "mousedown") {
             const bitmap = this.currentBitmap;
             const rowValue = bitmap[y];
             const isPixelLit = isOn(x, rowValue);
@@ -139,11 +179,11 @@ export default class extends React.Component {
                 mousedown: true,
                 initialPixelState: isPixelLit
             })
-        } else if(event.type === "mouseup") {
+        } else if (event.type === "mouseup") {
             this.setState({
                 mousedown: false
             })
-        } else if(this.state.mousedown && event.type === "mousemove") {
+        } else if (this.state.mousedown && event.type === "mousemove") {
             this.draw(x, y, !this.state.initialPixelState);
         }
     }
@@ -169,4 +209,14 @@ const codeStyle = css({
     clear: "both",
     fontFamily: "Consolas",
     fontSize: "1em"
+});
+
+const sectionStyle = css({
+    width: "50%",
+    float: "left",
+    display: "inline-block"
+});
+
+const clearStyle = css({
+    clear: "both"
 });
