@@ -26,7 +26,7 @@ Pixel.propTypes = {
 const genericStyles = {
   width: Styles.PIXEL_SIZE,
   height: Styles.PIXEL_SIZE,
-  float: 'left',
+  display: "table-cell"
 };
 
 const style = css(
@@ -42,7 +42,7 @@ const editableStyle = css({
 });
 
 const regularStyle = css({
-  cursor: "wait"
+  cursor: "cursor"
 });
 
 

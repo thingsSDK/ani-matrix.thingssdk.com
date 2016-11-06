@@ -37,5 +37,6 @@ Matrix.defaultProps = {
 
 const style = css({
   margin: "auto",
-  width: Styles.PIXEL_SIZE * Styles.DEFAULT_DIMENSIONS
+  width: Styles.PIXEL_SIZE * Styles.DEFAULT_DIMENSIONS,
+  height: Styles.PIXEL_SIZE * Styles.DEFAULT_DIMENSIONS
 });
