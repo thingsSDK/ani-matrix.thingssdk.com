@@ -1,11 +1,14 @@
 import React from 'react';
 import css from 'next/css';
+import Head from 'next/head';
 
 import Matrix from './matrix';
 import Radio from './radio';
 
 import { isOn } from './utils/binary';
 import { formatJS, formatCPP } from './utils/code_format';
+
+import FontAwesome from 'react-fontawesome';
 
 
 const smile = [
@@ -45,9 +48,17 @@ export default class extends React.Component {
     }
     startAnimationAtInterval(interval) {
         return setInterval(() => {
-            const index = this.state.currentPreviewFrameIndex;
+            let index = this.state.currentPreviewFrameIndex;
+
+
+            while (!this.state.animation[index]) {
+                index--;
+            }
+
+            const animationFrame = this.state.animation[index];
+
             this.setState({
-                currentPreviewFrame: this.state.animation[index]
+                currentPreviewFrame: animationFrame
             });
 
             let newIndex = index + 1;
@@ -110,17 +121,22 @@ export default class extends React.Component {
     }
     render() {
         return <div onMouseUp={this.mouseEvent.bind(this)}>
+            <Head>
+                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+
+                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+            </Head>
             <section className={sectionStyle}>
                 <h2>Editor</h2>
                 <nav>
                     <div>
-                        <button onClick={this.previousFrame.bind(this)}>Prev</button>
+                        <button onClick={this.previousFrame.bind(this)}><FontAwesome name='step-backward' /> Prev</button>
                         <span>{this.state.currentIndex + 1}/{this.state.animation.length}</span>
-                        <button onClick={this.nextFrame.bind(this)}>Next</button>
+                        <button onClick={this.nextFrame.bind(this)}>Next <FontAwesome name='step-forward' /> </button>
                     </div>
                 </nav>
                 <Matrix bitmap={this.state.animation[this.state.currentIndex]} mouseHandler={this.mouseEvent.bind(this)} />
-                <div>
+                <div className={clearStyle}>
                     <button onClick={this.newFrame.bind(this)}>New Frame</button>
                     <button onClick={this.deleteFrame.bind(this)}>Delete Frame</button>
                 </div>

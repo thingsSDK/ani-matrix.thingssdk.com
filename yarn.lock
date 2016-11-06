@@ -2197,6 +2197,10 @@ react-dom@15.3.2:
   version "15.3.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.3.2.tgz#c46b0aa5380d7b838e7a59c4a7beff2ed315531f"
 
+react-fontawesome:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/react-fontawesome/-/react-fontawesome-1.3.1.tgz#5832d1cadd5890ca987c536b884a26a93fa50b16"
+
 react-hot-loader@3.0.0-beta.6:
   version "3.0.0-beta.6"
   resolved "https://registry.yarnpkg.com/react-hot-loader/-/react-hot-loader-3.0.0-beta.6.tgz#463fac0bfc8b63a8385258af20c91636abce75f4"
