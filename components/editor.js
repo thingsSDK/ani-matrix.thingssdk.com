@@ -120,38 +120,41 @@ export default class extends React.Component {
         });
     }
     render() {
-        return <div onMouseUp={this.mouseEvent.bind(this)}>
+        return <div className="container" onMouseUp={this.mouseEvent.bind(this)}>
             <Head>
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
 
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
             </Head>
-            <section className={sectionStyle}>
-                <h2>Editor</h2>
+            <section className="col-md-6">
+                <h2><FontAwesome name="pencil-square-o" /> Editor</h2>
                 <nav>
                     <div>
-                        <button onClick={this.previousFrame.bind(this)}><FontAwesome name='step-backward' /> Prev</button>
-                        <span>{this.state.currentIndex + 1}/{this.state.animation.length}</span>
-                        <button onClick={this.nextFrame.bind(this)}>Next <FontAwesome name='step-forward' /> </button>
+                        <button onClick={this.previousFrame.bind(this)} className="btn btn-default col-md-3"><FontAwesome name='step-backward' /> Prev</button>
+                        <p className="col-md-6 text-center">{this.state.currentIndex + 1}/{this.state.animation.length}</p>
+                        <button onClick={this.nextFrame.bind(this)} className="btn btn-default col-md-3">Next <FontAwesome name='step-forward' /> </button>
                     </div>
                 </nav>
                 <Matrix bitmap={this.state.animation[this.state.currentIndex]} mouseHandler={this.mouseEvent.bind(this)} />
                 <div className={clearStyle}>
-                    <button onClick={this.newFrame.bind(this)}>New Frame</button>
-                    <button onClick={this.deleteFrame.bind(this)}>Delete Frame</button>
+                    <button onClick={this.newFrame.bind(this)} className="btn btn-default col-md-4"><FontAwesome name="plus" /> New Frame</button>
+                    <button onClick={this.deleteFrame.bind(this)} className="btn btn-default col-md-4  col-md-offset-4"><FontAwesome name="minus" /> Delete Frame</button>
                 </div>
             </section>
-            <section className={sectionStyle}>
-                <h2>Preview</h2>
+            <section className="col-md-6">
+                <h2><FontAwesome name="play" /> Preview</h2>
                 <Matrix bitmap={this.state.currentPreviewFrame} />
             </section>
-            <h2 className={clearStyle}>Code</h2>
+            <div className="col-md-12">
+            <h2 className={clearStyle}><FontAwesome name="code" /> Code</h2>
+            <p>Select a language for output:</p>
             <Radio value="js" checkedValue={this.state.language} name="language" onChange={this.changeLanguage.bind(this)} />
             <Radio value="cpp" checkedValue={this.state.language} name="language" onChange={this.changeLanguage.bind(this)} />
 
             <pre className={codeStyle}>
                 {this.formattedCode()}
             </pre>
+            </div>
         </div>;
     }
     formattedCode() {
@@ -217,12 +220,6 @@ const codeStyle = css({
     clear: "both",
     fontFamily: "Consolas",
     fontSize: "1em"
-});
-
-const sectionStyle = css({
-    width: "50%",
-    float: "left",
-    display: "inline-block"
 });
 
 const clearStyle = css({

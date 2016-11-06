@@ -36,5 +36,6 @@ Matrix.defaultProps = {
 };
 
 const style = css({
+  margin: "auto",
   width: Styles.PIXEL_SIZE * Styles.DEFAULT_DIMENSIONS
 });

@@ -1,4 +1,4 @@
 export default {
-    PIXEL_SIZE: 15,
+    PIXEL_SIZE: 20,
     DEFAULT_DIMENSIONS: 8
 }
