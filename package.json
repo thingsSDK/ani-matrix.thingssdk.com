@@ -13,7 +13,7 @@
     "microcontrollers"
   ],
   "engines": {
-    "node": "^6.9.1"
+    "node": "6.9.4"
   },
   "author": "Andrew Chalkley <andrew@chalkley.org>",
   "license": "MIT",
