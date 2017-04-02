@@ -1,9 +1,8 @@
 import React from 'react';
-import css from 'next/css';
 
 import Row from './row';
 
-import Styles from './utils/styles';
+import {upto} from './utils/upto';
 
 /**
  * Creates a number of rows with a given amount of pixels
@@ -11,32 +10,32 @@ import Styles from './utils/styles';
  * @param {number} rows
  * @param {number} pixels
  */
-function createRows(rows, pixels, bitmap, mouseHandler) {
-  const rowsOfPixelComponents = [];
-  for (let i = 0; i < rows; i ++) {
-    rowsOfPixelComponents.push(<Row key={i} width={pixels} rowNumber={i} rowValue={bitmap[i]} mouseHandler={mouseHandler} />);
-  }
+function createRows(rows, pixels, bitmap, mouseHandler, pixelSize) {
+  const rowsOfPixelComponents = upto(rows, i => <Row key={i} width={pixels} rowNumber={i} rowValue={bitmap[i]} mouseHandler={mouseHandler} pixelSize={pixelSize} />)
   return <div>{rowsOfPixelComponents}</div>;
 }
 
 export default function Matrix(props) {
-  return <div className={style}>{createRows(props.height, props.width, props.bitmap, props.mouseHandler)}</div>;
+  const style = {
+    margin: "auto",
+    width: props.pixelSize * props.width,
+    height:  props.pixelSize * props.height
+  };
+
+  return <div style={{...style, ...props.style}}>{createRows(props.height, props.width, props.bitmap, props.mouseHandler, props.pixelSize)}</div>;
 }
 
 Matrix.propTypes = {
+  pixelSize: React.PropTypes.number.isRequired,
   width: React.PropTypes.number.isRequired,
   height: React.PropTypes.number.isRequired,
-  bitmap: React.PropTypes.array,
-  mouseHandler: React.PropTypes.func
+  bitmap: React.PropTypes.array.isRequired,
+  mouseHandler: React.PropTypes.func,
+  style: React.PropTypes.object
 };
 
 Matrix.defaultProps = {
-  width: Styles.DEFAULT_DIMENSIONS,
-  height: Styles.DEFAULT_DIMENSIONS
+  pixelSize: 20,
+  width: 8,
+  height: 8
 };
-
-const style = css({
-  margin: "auto",
-  width: Styles.PIXEL_SIZE * Styles.DEFAULT_DIMENSIONS,
-  height: Styles.PIXEL_SIZE * Styles.DEFAULT_DIMENSIONS
-});

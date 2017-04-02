@@ -1,48 +1,44 @@
 import React from 'react';
-import css, {merge} from 'next/css';
-
-import Styles from './utils/styles';
-
 
 export default function Pixel(props) {
-  const mouseEvent = event => props.mouseHandler(event, props.x, props.y);
-  const pixelStyle = props.on ? selectedStyle : style;
+  const defaultStyle = {width: props.pixelSize, height: props.pixelSize};
   const cursorStyle = props.mouseHandler ? editableStyle : regularStyle;
+  const mouseEvent = event => props.mouseHandler ? props.mouseHandler(event, props.x, props.y) : () => {};
+  const pixelStyle = props.on ? selectedStyle : style;
   return <div 
-            {...merge(pixelStyle, cursorStyle)}
+            style={{...defaultStyle, ...pixelStyle, ...cursorStyle}}
             onMouseDown={mouseEvent} 
             onMouseUp={mouseEvent} 
             onMouseMove={mouseEvent}
-            draggable={false}>{props.children}</div>;
+            >{props.children}</div>;
 };
 
 Pixel.propTypes = {
+  pixelSize: React.PropTypes.number.isRequired,
   x: React.PropTypes.number.isRequired,
   y: React.PropTypes.number.isRequired,
   on: React.PropTypes.bool.isRequired,
   mouseHandler: React.PropTypes.func
 };
 
+Pixel.defaultProps = {
+  pixelSize: 20
+};
+
 const genericStyles = {
-  width: Styles.PIXEL_SIZE,
-  height: Styles.PIXEL_SIZE,
   display: "table-cell"
 };
 
-const style = css(
-  Object.assign({backgroundColor: "#eee"}, genericStyles)
-);
+const style = Object.assign({backgroundColor: "#eee"}, genericStyles);
 
-const selectedStyle = css(
-  Object.assign({backgroundColor: "red"}, genericStyles)
-);
+const selectedStyle = Object.assign({backgroundColor: "red"}, genericStyles);
 
-const editableStyle = css({
+const editableStyle = {
   cursor: "pointer"
-});
+};
 
-const regularStyle = css({
+const regularStyle = {
   cursor: "cursor"
-});
+};
 
 

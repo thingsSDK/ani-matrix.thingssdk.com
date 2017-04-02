@@ -1,29 +1,30 @@
 import React from 'react';
-import css from "next/css";
-
-
 import Pixel from "./pixel";
 
 import {isOn} from './utils/binary';
+import {upto} from './utils/upto';
+
+const createPixelAtIndex = (rowNumber, value, mouseHandler, pixelSize) => index => <Pixel key={`${index}-${rowNumber}`} x={index} y={rowNumber} on={isOn(index, value)} mouseHandler={mouseHandler} pixelSize={pixelSize} />;
 
 /**
  * Creates a row full of pixels
  * 
- * @param {number} pixels - number of pixels in a row
- * @returns array
+ * @param {number} rowNumber 
+ * @param {number} pixels 
+ * @param {number} value 
+ * @param {function} mouseHandler 
+ * @returns {JSX.Element} row for the matrix
  */
-function createRow(rowNumber, pixels, value, mouseHandler) {   
-    const pixelsComponents = [];
-    for(let i = 0; i < pixels; i ++) {
-        pixelsComponents.push(<Pixel key={`${i}-${rowNumber}`} x={i} y={rowNumber} on={isOn(i, value)} mouseHandler={mouseHandler} />);
-    }
-    return <div className={style} draggable={false}>{pixelsComponents}</div>;
+function createRow(rowNumber, pixels, value, mouseHandler, pixelSize) {   
+    const partialPixel = createPixelAtIndex(rowNumber, value, mouseHandler, pixelSize);
+    const pixelComponents = upto(pixels, partialPixel);
+    return <div style={style}>{pixelComponents}</div>;
 }
 
 export default (props) => {
-    return createRow(props.rowNumber, props.width, props.rowValue, props.mouseHandler);
+    return createRow(props.rowNumber, props.width, props.rowValue, props.mouseHandler, props.pixelSize);
 }
 
-const style = css({
+const style = {
     clear: "both"
-});
+};
