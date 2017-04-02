@@ -6,18 +6,23 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start -p $PORT"
+    "start": "next start -p $PORT",
+    "heroku-postbuild": "heroku-nextjs-build"
   },
   "keywords": [
     "matrix",
     "microcontrollers"
   ],
   "engines": {
-    "node": "6.9.4"
+    "node": "6.9.x"
   },
+  "cacheDirectories": [
+    "nextjs/node_modules"
+  ],
   "author": "Andrew Chalkley <andrew@chalkley.org>",
   "license": "MIT",
-  "dependencies": {
+  "dependencies": {    
+    "@mars/heroku-nextjs-build": "^2.0.0",
     "next": "^2.0.1",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
