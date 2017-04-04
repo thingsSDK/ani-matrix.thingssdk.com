@@ -14,7 +14,7 @@
     "microcontrollers"
   ],
   "engines": {
-    "node": "6.9.x"
+    "node": "^6.9.4"
   },
   "cacheDirectories": [
     "nextjs/node_modules"

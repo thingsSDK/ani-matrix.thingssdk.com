@@ -4,8 +4,8 @@ import Head from 'next/head';
 import Matrix from './matrix';
 import TimelineMatrix from './timeline_matrix';
 
-import Radio from './radio';
 import Panel from './panel';
+import Tab from './tab';
 
 import { isOn } from './utils/binary';
 import { formatJS, formatCPP } from './utils/code_format';
@@ -29,6 +29,17 @@ const smile = [
 
 const animation = [
     smile
+];
+
+const languages = [
+    {
+        value: "javascript",
+        title: "JavaScript"
+    },
+    {
+        value: "cpp",
+        title: "C++"
+    }
 ];
 
 export default class Editor extends React.Component {
@@ -130,51 +141,50 @@ export default class Editor extends React.Component {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
             </Head>
             <h1 className="col-md-12">Animation Tool for HT16K33</h1>
-            <div className='col-xs-12 col-md-6'>
+            <div className='col-md-4'>
                 <Panel icon="pencil-square-o" title="Editor">
                     <Matrix bitmap={this.state.animation[this.state.currentIndex]} mouseHandler={this.mouseEvent.bind(this)} />
-                    <div className="form-group col-md-12">
-                        <div className="input-group">
-                            <span className="input-group-addon">Interval <FontAwesome name="clock-o" /></span>
-                                <input type="text" className="form-control" value={this.state.intervalTime} onChange={event => this.changeInterval(event.target.value)}/>
-                        </div>
-                    </div>
                 </Panel>                
             </div>
-            <div className='col-xs-12 col-md-6'>
+            <div className='col-md-4'>
                 <Panel icon="play" title="Preview">
                    <Matrix bitmap={this.state.currentPreviewFrame} />
                 </Panel>
-            </div>
+            </div>         
+            
+            <div className="col-md-4">
+                <Panel icon="gear" title="Settings">
+                <div className="input-group">
+                    <span className="input-group-addon">Interval <FontAwesome name="clock-o" /></span>
+                    <input type="text" className="form-control" value={this.state.intervalTime} onChange={event => this.changeInterval(event.target.value)}/>
+                </div>
+                </Panel>
+            </div> 
             <div className="col-md-12">
                 <Panel icon="film" title={`Timeline ${this.state.currentIndex + 1}/${this.state.animation.length}`}>
-
-
-                <div className="navbar navbar-default">
-                    <p className="navbar-text">Frames:</p>
-                <div className="btn-group" role="group" >
-                    
-                    <button onClick={this.newFrame.bind(this)} className="btn btn-default navbar-btn" title="Add new frame"><FontAwesome name="plus" /> Add</button>
-                    <button onClick={this.deleteFrame.bind(this)} className="btn btn-default navbar-btn" title="Delete frame"><FontAwesome name="minus" /> Remove</button>
-                </div>
-                <span> </span>
-                <div className="btn-group" role="group">
-                    <button onClick={this.previousFrame.bind(this)} className="btn btn-default navbar-btn" title='Previous'><FontAwesome name='step-backward' /> Prev</button>
-                    <button onClick={this.nextFrame.bind(this)} className="btn btn-default navbar-btn" title='Next'>Next <FontAwesome name='step-forward' /></button>
-                </div>
-                </div>
-
-                
-                <div className='col-md-12'>
-                {this.state.animation.map((bitmap, index) => ({key:index, selectedIndex:this.state.currentIndex, bitmap, index})).map(props => <TimelineMatrix {...props} switchFrame={this.switchFrame.bind(this)} />)}
-                </div>
+                    <div className="navbar navbar-default">
+                        <p className="navbar-text">Frames:</p>
+                    <div className="btn-group" role="group" >
+                        
+                        <button onClick={this.newFrame.bind(this)} className="btn btn-default navbar-btn" title="Add new frame"><FontAwesome name="plus" /> Add</button>
+                        <button onClick={this.deleteFrame.bind(this)} className="btn btn-default navbar-btn" title="Delete frame"><FontAwesome name="minus" /> Remove</button>
+                    </div>
+                    <span> </span>
+                    <div className="btn-group" role="group">
+                        <button onClick={this.previousFrame.bind(this)} className="btn btn-default navbar-btn" title='Previous'><FontAwesome name='step-backward' /> Prev</button>
+                        <button onClick={this.nextFrame.bind(this)} className="btn btn-default navbar-btn" title='Next'>Next <FontAwesome name='step-forward' /></button>
+                    </div>
+                    </div>                  
+                    <div className='col-md-12'>
+                    {this.state.animation.map((bitmap, index) => ({key:index, selectedIndex:this.state.currentIndex, bitmap, index})).map(props => <TimelineMatrix {...props} switchFrame={this.switchFrame.bind(this)} />)}       
+                    </div>
                 </Panel>
             </div>
             <div className="col-md-12">
-            <Panel icon="code" title="code">
-            <p>Select a language for output:</p>
-            <Radio value="javascript" checkedValue={this.state.language} name="language" onChange={this.changeLanguage.bind(this)} />
-            <Radio value="cpp" checkedValue={this.state.language}  name="language" onChange={this.changeLanguage.bind(this)} />
+            <Panel icon="code" title="Code">
+            <ul className="nav nav-tabs">
+                {languages.map(language => <Tab selectedLanguage={this.state.language} {...language} clickHandler={this.changeLanguage.bind(this)} />)}    
+            </ul>
             <SyntaxHighlighter language={this.state.language} style={monokaiSublime}>               
                 {this.formattedCode()} 
             </SyntaxHighlighter>
@@ -200,8 +210,7 @@ export default class Editor extends React.Component {
         const isPixelLit = isOn(x, rowValue);
         this.draw(x, y, !isPixelLit);
     }
-    changeLanguage(e) {
-        const language = e.target.value;
+    changeLanguage(language) {
         this.setState({ language });
     }
     mouseEvent(event, x, y) {
