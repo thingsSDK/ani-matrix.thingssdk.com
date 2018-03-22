@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default function Tab(props) {
     const className = props.selectedLanguage === props.value ? "active" : ""
@@ -6,8 +7,8 @@ export default function Tab(props) {
 }
 
 Tab.propTypes = {
-  selectedLanguage: React.PropTypes.string.isRequired,
-  value: React.PropTypes.string.isRequired,
-  title: React.PropTypes.string.isRequired,
-  clickHandler: React.PropTypes.func.isRequired
+  selectedLanguage: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  clickHandler: PropTypes.func.isRequired
 }

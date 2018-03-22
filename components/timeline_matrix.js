@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import Matrix from './matrix';
 
 export default function TimelineMatrix(props) {
@@ -10,7 +12,7 @@ export default function TimelineMatrix(props) {
 }
 
 TimelineMatrix.propTypes = {
-    switchFrame: React.PropTypes.func.isRequired
+    switchFrame: PropTypes.func.isRequired
 }
 
 TimelineMatrix.defaultProps = {

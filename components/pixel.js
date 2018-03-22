@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types'; 
 
 export default function Pixel(props) {
   const defaultStyle = {width: props.pixelSize, height: props.pixelSize};
@@ -14,11 +15,11 @@ export default function Pixel(props) {
 };
 
 Pixel.propTypes = {
-  pixelSize: React.PropTypes.number.isRequired,
-  x: React.PropTypes.number.isRequired,
-  y: React.PropTypes.number.isRequired,
-  on: React.PropTypes.bool.isRequired,
-  mouseHandler: React.PropTypes.func
+  pixelSize: PropTypes.number.isRequired,
+  x: PropTypes.number.isRequired,
+  y: PropTypes.number.isRequired,
+  on: PropTypes.bool.isRequired,
+  mouseHandler: PropTypes.func
 };
 
 Pixel.defaultProps = {

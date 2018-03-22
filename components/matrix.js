@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Row from './row';
 
@@ -26,12 +27,12 @@ export default function Matrix(props) {
 }
 
 Matrix.propTypes = {
-  pixelSize: React.PropTypes.number.isRequired,
-  width: React.PropTypes.number.isRequired,
-  height: React.PropTypes.number.isRequired,
-  bitmap: React.PropTypes.array.isRequired,
-  mouseHandler: React.PropTypes.func,
-  style: React.PropTypes.object
+  pixelSize: PropTypes.number.isRequired,
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+  bitmap: PropTypes.array.isRequired,
+  mouseHandler: PropTypes.func,
+  style: PropTypes.object
 };
 
 Matrix.defaultProps = {

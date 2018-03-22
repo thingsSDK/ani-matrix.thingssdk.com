@@ -21,11 +21,12 @@
   ],
   "author": "Andrew Chalkley <andrew@chalkley.org>",
   "license": "MIT",
-  "dependencies": {    
+  "dependencies": {
     "@mars/heroku-nextjs-build": "^2.0.0",
-    "next": "^2.0.1",
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2",
+    "next": "^5",
+    "prop-types": "^15.6.1",
+    "react": "^16",
+    "react-dom": "^16",
     "react-fontawesome": "^1.5.0",
     "react-syntax-highlighter": "^5.1.2"
   }

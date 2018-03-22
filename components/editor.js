@@ -150,8 +150,7 @@ export default class Editor extends React.Component {
                 <Panel icon="play" title="Preview">
                    <Matrix bitmap={this.state.currentPreviewFrame} />
                 </Panel>
-            </div>         
-            
+            </div>
             <div className="col-md-4">
                 <Panel icon="gear" title="Settings">
                 <div className="input-group">
